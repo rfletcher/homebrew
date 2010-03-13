@@ -1,10 +1,11 @@
 require 'extend/pathname'
 require 'extend/ARGV'
+require 'extend/string'
 require 'utils'
 
 ARGV.extend(HomebrewArgvExtension)
 
-HOMEBREW_VERSION = 0.5
+HOMEBREW_VERSION = 0.6
 HOMEBREW_WWW = 'http://bit.ly/Homebrew'
 
 if Process.uid == 0
@@ -59,4 +60,10 @@ class ExecutionError <RuntimeError
 end
 
 class BuildError <ExecutionError
+  attr :env
+
+  def initialize cmd, args = [], es = nil
+    super
+    @env = ENV.to_hash
+  end
 end
